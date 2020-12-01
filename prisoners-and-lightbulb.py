@@ -30,7 +30,7 @@ class Prisoner():
 
 def simulate(num_prisoners):
     lightbulb_on = False
-    prisoners = [Prisoner(i) for i in range(num_prisoners)]
+    prisoners = [Prisoner(i+1) for i in range(num_prisoners)]
     prisoners[-1].is_counter = True
     prisoners_visisted = set()
     visit_count = 0
@@ -69,12 +69,19 @@ def simulate(num_prisoners):
     return visit_count
 
 
+trials = input("How many simulations? (<Enter> for Single) ")
 number_of_prisoners = int(input("How many prisoners? "))
-number_of_trials = int(input("How many simulations? "))
+if trials == '':
+    simulate(number_of_prisoners)
+else:
+    number_of_trials = int(trials)
+    results = []
 
-results = []
-
-for trial in range(number_of_trials):
-    visit_count = simulate(number_of_prisoners)
-    results.append(visit_count)
-    log("Trial {}: {} visits".format(trial+1, visit_count))
+    verbose = number_of_trials <= 3
+    for trial in range(number_of_trials):
+        visit_count = simulate(number_of_prisoners)
+        results.append(visit_count)
+        if number_of_trials < 1000:
+            print("Trial {}: {} visits".format(trial+1, visit_count))
+    print("\nAverage of {} trials with {} prisoners: {}".format(
+        number_of_trials, number_of_prisoners, sum(results)/number_of_trials))
